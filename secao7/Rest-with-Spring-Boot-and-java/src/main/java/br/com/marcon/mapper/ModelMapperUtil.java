@@ -5,9 +5,17 @@ import java.util.List;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 
-public class ModelMapperUtil {
+import br.com.marcon.data.vo.v1.PearsonVO;
+import br.com.marcon.model.Pearson;
 
-    private static final ModelMapper modelMapper = new ModelMapper();
+public class ModelMapperUtil {
+	
+	private static ModelMapper modelMapper = new ModelMapper();
+	
+	static {
+		modelMapper.createTypeMap(Pearson.class, PearsonVO.class).addMapping(Pearson::getId, PearsonVO::setKey);
+		modelMapper.createTypeMap(PearsonVO.class, Pearson.class).addMapping(PearsonVO::getKey, Pearson::setId);
+	}
 
     public static <O, D> D map(O origin, Class<D> destinationType) {
         return modelMapper.map(origin, destinationType);
